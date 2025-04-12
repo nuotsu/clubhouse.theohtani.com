@@ -1,3 +1,11 @@
+import Header from '@/ui/Header'
+import DatePicker from '@/ui/DatePicker'
+
 export default function Home() {
-	return <h1>The Clubhouse MLB Scorebug</h1>
+	return (
+		<main>
+			<Header />
+			<DatePicker />
+		</main>
+	)
 }
