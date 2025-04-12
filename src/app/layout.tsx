@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
-import { Geist_Mono as Font } from 'next/font/google'
+import { Chakra_Petch as Font } from 'next/font/google'
 import '@/app.css'
 
 const font = Font({
 	subsets: ['latin'],
+	weight: ['400', '700'],
 })
 
 export const metadata: Metadata = {
