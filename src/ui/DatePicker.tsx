@@ -2,8 +2,6 @@
 
 import { useStorage } from '@/lib/store'
 
-const TODAY = new Date().toISOString().split('T')[0]
-
 function format(date: string, options: Intl.DateTimeFormatOptions) {
 	const now = new Date()
 	const localTime = [
@@ -16,7 +14,7 @@ function format(date: string, options: Intl.DateTimeFormatOptions) {
 }
 
 export default function DatePicker() {
-	const { date, setDate } = useStorage()
+	const { date, setDate, today } = useStorage()
 
 	function addDay(days: number = 1) {
 		const current = new Date(date)
@@ -54,10 +52,10 @@ export default function DatePicker() {
 					/>
 				</label>
 
-				{date !== TODAY && (
+				{date !== today && (
 					<button
 						className="click anim-fade-to-r"
-						onClick={() => setDate(TODAY)}
+						onClick={() => setDate(today)}
 					>
 						Today
 					</button>
