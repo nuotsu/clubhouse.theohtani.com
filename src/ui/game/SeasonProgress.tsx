@@ -8,25 +8,38 @@ const MAX = 162
 
 export default function SeasonProgress({ data }: { data: MLB.Schedule }) {
 	const { games } = data.dates[0]
+
 	const gameCounts = games
-		.flatMap((game) => Object.values(game.teams) as MLB.ScheduleTeam[])
-		.map((team) => team.leagueRecord.wins + team.leagueRecord.losses)
+		.filter((game) => game.seriesDescription === 'Regular Season')
+		.flatMap((game) => {
+			const isFinal = game.status.abstractGameState === 'Final'
+			const teams = Object.values(game.teams) as MLB.ScheduleTeam[]
+			return teams.map(
+				(team) =>
+					team.leagueRecord.wins + team.leagueRecord.losses + (isFinal ? 0 : 1),
+			)
+		})
 
-	const { today } = useStorage()
+	if (gameCounts.length === 0) return null
 
-	const avg = Math.round(
-		gameCounts.reduce((a, b) => a + b, 0) / gameCounts.length,
+	const { date, today } = useStorage()
+
+	const current = Math.min(
+		Math.round(gameCounts.reduce((a, b) => a + b, 0) / gameCounts.length),
+		MAX,
 	)
 
 	return (
 		<div className={cn(css.root, 'grid items-stretch gap-x-[.5ch] uppercase')}>
 			<div
 				className="mr-auto [grid-area:current]"
-				style={{ marginLeft: `calc(100% * ${avg / MAX})` }}
+				style={{ marginLeft: `calc(100% * ${current / MAX})` }}
 			>
 				<div className="grid -translate-x-1/2 text-center">
 					<small className="text-[xx-small]/1 font-bold">Game</small>
-					<b className="text-2xl/[1]">{avg}</b>
+					<b className={cn('text-2xl/[1]', date > today && css.future)}>
+						{current}
+					</b>
 				</div>
 			</div>
 
@@ -38,7 +51,7 @@ export default function SeasonProgress({ data }: { data: MLB.Schedule }) {
 				style={
 					{
 						'--max': MAX,
-						'--progress': `calc(100% * ${avg / MAX})`,
+						'--progress': `calc(100% * ${current / MAX})`,
 					} as React.CSSProperties
 				}
 			/>

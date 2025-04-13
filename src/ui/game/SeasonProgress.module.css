@@ -41,3 +41,15 @@
 		translate: -50% 0;
 	}
 }
+
+.future {
+	position: relative;
+
+	&::after {
+		content: '+';
+		position: absolute;
+		left: 100%;
+		top: 0;
+		font-size: small;
+	}
+}
