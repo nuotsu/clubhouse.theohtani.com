@@ -37,7 +37,13 @@ export default function SeasonProgress({ data }: { data: MLB.Schedule }) {
 			>
 				<div className="grid -translate-x-1/2 text-center">
 					<small className="text-[xx-small]/1 font-bold">Game</small>
-					<b className={cn('text-2xl/[1]', date > today && css.future)}>
+					<b
+						className={cn(
+							'anim-fade text-2xl/[1] [--x:-0.5ch]',
+							date > today && css.future,
+						)}
+						key={current}
+					>
 						{current}
 					</b>
 				</div>
@@ -46,7 +52,7 @@ export default function SeasonProgress({ data }: { data: MLB.Schedule }) {
 			<div
 				className={cn(
 					css.progress,
-					'relative flex flex-col justify-center border-r [grid-area:progress]',
+					'relative flex flex-col justify-center border-r [grid-area:progress] md:[--factor:1]',
 				)}
 				style={
 					{

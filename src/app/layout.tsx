@@ -1,8 +1,13 @@
 import type { Metadata } from 'next'
-import { Chakra_Petch as Font } from 'next/font/google'
+import { Chakra_Petch, Jost } from 'next/font/google'
 import '@/app.css'
 
-const font = Font({
+const baseFont = Chakra_Petch({
+	subsets: ['latin'],
+	weight: ['400', '700'],
+})
+
+const subFont = Jost({
 	subsets: ['latin'],
 	weight: ['400', '700'],
 })
@@ -19,9 +24,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${font.className} bg-bg text-fg antialiased`}>
-				{children}
-			</body>
+			<body className={`font-base bg-bg text-fg antialiased`}>{children}</body>
 		</html>
 	)
 }
