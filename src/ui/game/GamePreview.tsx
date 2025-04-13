@@ -10,18 +10,20 @@ export default function GamePreview({
 	game: MLB.ScheduleGame
 	index?: number
 }) {
+	const { data } = fetchMLBLive<MLB.LiveData>(game.link)
+
 	return (
 		<article
 			className="-order-1 mx-auto max-w-max text-center font-bold uppercase"
 			style={{ '--delay': `${index * 20}ms` } as React.CSSProperties}
 		>
 			<div className="flex flex-wrap items-end justify-center gap-x-[.5ch]">
-				<Team unresolvedTeam={game.teams.away.team} className="[--x:-.5ch]" />
+				<Team team={data?.gameData.teams.away} className="[--x:-.5ch]" />
 				<span className="text-sm">vs</span>
-				<Team unresolvedTeam={game.teams.home.team} className="[--x:.5ch]" />
+				<Team team={data?.gameData.teams.home} className="[--x:.5ch]" />
 			</div>
 
-			<hr className="anim-scale-x duration-700x" />
+			<hr className="anim-scale-x duration-700" />
 
 			<time className="font-sub" dateTime={game.gameDate}>
 				{new Date(game.gameDate).toLocaleTimeString('en-US', {
@@ -35,24 +37,25 @@ export default function GamePreview({
 }
 
 function Team({
-	unresolvedTeam,
+	team,
 	className,
 }: {
-	unresolvedTeam: MLB.ScheduleTeam['team']
+	team?: MLB.LiveTeam
 } & React.ComponentProps<'strong'>) {
-	const { data } = fetchMLBLive<{ teams: MLB.Team[] }>(unresolvedTeam.link, {
-		refreshInterval: 1000 * 60,
-	})
-	const team = data?.teams[0]
-
 	return (
 		<strong
 			className={cn(
-				'anim-fade text-2xl leading-none opacity-0 sm:text-3xl',
+				'anim-fade group grid place-content-center text-2xl leading-none opacity-0 *:col-span-full *:row-span-full sm:text-3xl',
 				className,
 			)}
 		>
-			{team?.clubName}
+			<span className="transition-all group-hover:opacity-50 group-hover:blur-xs">
+				{team?.clubName || <span>TBD</span>}
+			</span>
+
+			<span className="m-auto text-xl/none transition-opacity group-[&:not(:hover)]:opacity-0">
+				{team?.record.wins}-{team?.record.losses}
+			</span>
 		</strong>
 	)
 }

@@ -24,7 +24,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`font-base bg-bg text-fg antialiased`}>{children}</body>
+			<body className="font-base bg-bg text-fg cursor-crosshair antialiased">
+				{children}
+			</body>
 		</html>
 	)
 }

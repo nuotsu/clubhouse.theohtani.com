@@ -15,7 +15,6 @@ function format(date: string, options: Intl.DateTimeFormatOptions) {
 
 export default function DatePicker() {
 	const { date, setDate, today } = useStorage()
-	console.log({ today })
 
 	function addDay(days: number = 1) {
 		const current = new Date(date)

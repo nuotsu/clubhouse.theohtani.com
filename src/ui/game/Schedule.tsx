@@ -39,10 +39,9 @@ export default function Schedule() {
 				{count(data.totalGames, 'game')}
 			</h2>
 
-			<div className="grid">
+			<div className="gap-ch grid">
 				{data.dates[0].games.map((game, i) => {
 					const { codedGameState } = game.status
-					console.log({ codedGameState })
 
 					if (codedGameState === 'P' || codedGameState === 'S')
 						return <GamePreview game={game} index={i} key={game.gamePk} />
